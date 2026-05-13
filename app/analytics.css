@@ -1,0 +1,96 @@
+.analytics {
+  padding: 20px;
+  background: #f5efe6;
+}
+
+/* HEADER */
+.header h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+/* KPI */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.kpi-card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.kpi-card.premium {
+  border-bottom: 4px solid #D4AF37;
+}
+
+.growth {
+  color: green;
+  font-size: 12px;
+}
+
+/* CHARTS */
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.card.premium {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* BOTTOM */
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* SEATS */
+.seat {
+  margin-top: 10px;
+}
+
+.seat-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.progress {
+  height: 8px;
+  background: #eee;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.premium-bar {
+  height: 100%;
+  background: linear-gradient(90deg,#8B0000,#D4AF37);
+  border-radius: 6px;
+}
+
+/* ROUTES */
+.route {
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: #fafafa;
+}
+
+.premium-route:hover {
+  background: #fff3e0;
+  transition: 0.3s;
+}
