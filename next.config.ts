@@ -1,10 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "localhost",              // your backend (if still used)
-      "res.cloudinary.com",     // Cloudinary
-      "images.unsplash.com",    // ✅ Unsplash (FIX)
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+
+      {
+        protocol: "https",
+        hostname:
+          "airvoyage-final-project-backend-2.onrender.com",
+      },
     ],
   },
 };
