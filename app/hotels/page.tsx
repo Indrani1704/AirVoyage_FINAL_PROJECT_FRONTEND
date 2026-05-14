@@ -48,6 +48,9 @@ function HotelsContent() {
     setSelectedHotel] =
     useState<any>(null);
 
+    const [loading, setLoading] =
+  useState(true);
+
   const [bookingForm,
     setBookingForm] =
     useState({
@@ -151,35 +154,48 @@ function HotelsContent() {
 
   /* ================= FETCH HOTELS ================= */
 
-  useEffect(()=>{
+useEffect(()=>{
 
-    if(!location) return;
+  if(!location) return;
 
-    fetch(
-      `https://airvoyage-final-project-backend-2.onrender.com/api/hotels/search?location=${location}&checkIn=${bookingForm.checkIn}&checkOut=${bookingForm.checkOut}&guests=${bookingForm.guests}`
-    )
-      .then(res=>res.json())
-      .then(data=>{
+  setLoading(true);
 
-        setHotels(
-          Array.isArray(data)
-            ? data
-            : []
-        );
+  fetch(
+    `https://airvoyage-final-project-backend-2.onrender.com/api/hotels/search?location=${location}&checkIn=${bookingForm.checkIn}&checkOut=${bookingForm.checkOut}&guests=${bookingForm.guests}`
+  )
 
-      })
-      .catch(err=>{
+    .then(res=>res.json())
 
-        console.log(err);
+    .then(data=>{
 
-      });
+      setHotels(
+        Array.isArray(data)
+          ? data
+          : []
+      );
 
-  },[
-    location,
-    bookingForm.checkIn,
-    bookingForm.checkOut,
-    bookingForm.guests
-  ]);
+    })
+
+    .catch(err=>{
+
+      console.log(err);
+
+      setHotels([]);
+
+    })
+
+    .finally(()=>{
+
+      setLoading(false);
+
+    });
+
+},[
+  location,
+  bookingForm.checkIn,
+  bookingForm.checkOut,
+  bookingForm.guests
+]);
 
   /* ================= LOAD RAZORPAY ================= */
 
@@ -1302,7 +1318,31 @@ export default function HotelsPage() {
   return (
 
     <Suspense
-      fallback={<p>Loading...</p>}
+      fallback={
+
+  <div
+    style={{
+
+      height:"100vh",
+
+      display:"flex",
+
+      alignItems:"center",
+
+      justifyContent:"center",
+
+      fontSize:"20px",
+
+      fontWeight:"bold",
+
+      color:"#8B0000",
+
+    }}
+  >
+    Loading Hotels...
+  </div>
+
+}
     >
 
       <HotelsContent />

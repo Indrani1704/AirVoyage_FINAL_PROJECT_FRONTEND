@@ -35,6 +35,8 @@ function CarsContent() {
   const [open, setOpen] = useState(false);
 
   const [selectedCar, setSelectedCar] = useState<any>(null);
+  const [loading, setLoading] =
+  useState(true);
 
   const [bookingForm, setBookingForm] = useState({
     fullName: "",
@@ -100,19 +102,46 @@ function CarsContent() {
   /* ================= FETCH ================= */
 
   useEffect(() => {
-    if (!location) return;
 
-    fetch(
-      `https://airvoyage-final-project-backend-2.onrender.com/api/cars/search?location=${location}&startDate=${bookingForm.startDate}&endDate=${bookingForm.endDate}`,
-    )
-      .then((res) => res.json())
-      .then((data: any) => {
-        setCars(Array.isArray(data) ? data : []);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
-  }, [location, bookingForm.startDate, bookingForm.endDate]);
+  if (!location) return;
+
+  setLoading(true);
+
+  fetch(
+    `https://airvoyage-final-project-backend-2.onrender.com/api/cars/search?location=${location}&startDate=${bookingForm.startDate}&endDate=${bookingForm.endDate}`,
+  )
+
+    .then((res) => res.json())
+
+    .then((data: any) => {
+
+      setCars(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    })
+
+    .catch((err: any) => {
+
+      console.log(err);
+
+      setCars([]);
+
+    })
+
+    .finally(() => {
+
+      setLoading(false);
+
+    });
+
+}, [
+  location,
+  bookingForm.startDate,
+  bookingForm.endDate,
+]);
 
   /* ================= OPEN ================= */
 
@@ -383,6 +412,106 @@ function CarsContent() {
       toast.error("Payment Failed");
     }
   };
+
+if (loading) {
+
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff5f5,#ffffff)",
+
+      }}
+    >
+
+      {/* SPINNER */}
+
+      <div
+        style={{
+
+          width:"80px",
+
+          height:"80px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #8B0000",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"24px",
+
+        }}
+      />
+
+      {/* TITLE */}
+
+      <h2
+        style={{
+
+          color:"#8B0000",
+
+          fontWeight:700,
+
+          marginBottom:"8px",
+
+        }}
+      >
+        Searching Cars...
+      </h2>
+
+      {/* SUBTEXT */}
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Finding premium rides & best prices 🚖
+      </p>
+
+      {/* ANIMATION */}
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
+
+}
+
+
 
   return (
     <div className="page-container">
@@ -817,7 +946,31 @@ export default function CarsPage() {
   return (
 
     <Suspense
-      fallback={<p>Loading...</p>}
+      fallback={
+
+  <div
+    style={{
+
+      height:"100vh",
+
+      display:"flex",
+
+      alignItems:"center",
+
+      justifyContent:"center",
+
+      fontSize:"20px",
+
+      fontWeight:"bold",
+
+      color:"#8B0000",
+
+    }}
+  >
+    Loading Cars...
+  </div>
+
+}
     >
 
       <CarsContent />

@@ -36,24 +36,145 @@ type AnalyticsData = {
 };
 
 export default function Analytics() {
-  /* ✅ FIXED TYPESCRIPT ERROR */
+ 
   const [data, setData] = useState<AnalyticsData | null>(null);
 
-  useEffect(() => {
-    fetch(`${BASE}/analytics`)
-      .then((res) => res.json())
-      .then((res: AnalyticsData) => setData(res))
-      .catch(() =>
-        setData({
-          totalBookings: 0,
-          totalRevenue: 0,
-          trendData: [],
-          topSeats: [],
-        })
-      );
-  }, []);
+   
 
-  if (!data) return <p>Loading...</p>;
+  const [loading, setLoading] =
+    useState(true);
+
+ useEffect(() => {
+
+  setLoading(true);
+
+  fetch(`${BASE}/analytics`)
+
+    .then((res) => res.json())
+
+    .then((res: AnalyticsData) => {
+
+      setData(res);
+
+    })
+
+    .catch(() =>
+
+      setData({
+
+        totalBookings: 0,
+
+        totalRevenue: 0,
+
+        trendData: [],
+
+        topSeats: [],
+
+      })
+
+    )
+
+    .finally(() => {
+
+      setLoading(false);
+
+    });
+
+}, []);
+
+  if (loading || !data)
+
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff5f5,#ffffff)",
+
+      }}
+    >
+
+      {/* SPINNER */}
+
+      <div
+        style={{
+
+          width:"80px",
+
+          height:"80px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #8B0000",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"24px",
+
+        }}
+      />
+
+      {/* TITLE */}
+
+      <h2
+        style={{
+
+          color:"#8B0000",
+
+          marginBottom:"8px",
+
+          fontWeight:700,
+
+        }}
+      >
+        Loading Analytics...
+      </h2>
+
+      {/* SUBTEXT */}
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Fetching airline performance data ✈
+      </p>
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
 
   return (
     <div className="analytics">

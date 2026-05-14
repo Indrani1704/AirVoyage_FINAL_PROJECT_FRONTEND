@@ -136,16 +136,100 @@ export default function FlightsPage() {
         </Button>
       </Box>
 
-      {/* LOADING */}
-      {loading && (
-        <Typography
-          sx={{
-            textAlign: "center",
-          }}
-        >
-          Loading flights...
-        </Typography>
-      )}
+     {/* LOADING */}
+{loading && (
+
+  <Box
+    component="div"
+    sx={{
+
+      minHeight:"60vh",
+
+      display:"flex",
+
+      flexDirection:"column",
+
+      alignItems:"center",
+
+      justifyContent:"center",
+
+    }}
+  >
+
+    {/* SPINNER */}
+
+    <Box
+      component="div"
+      sx={{
+
+        width:"75px",
+
+        height:"75px",
+
+        border:
+          "6px solid #f3f3f3",
+
+        borderTop:
+          "6px solid #C62828",
+
+        borderRadius:"50%",
+
+        animation:
+          "spin 1s linear infinite",
+
+        mb:3,
+
+      }}
+    />
+
+    {/* TITLE */}
+
+    <Typography
+      variant="h5"
+      sx={{
+
+        fontWeight:"bold",
+
+        color:"#8B0000",
+
+        mb:1,
+
+      }}
+    >
+      Loading Flights...
+    </Typography>
+
+    {/* SUBTEXT */}
+
+    <Typography
+      sx={{
+        color:"gray",
+      }}
+    >
+      Fetching latest flight data ✈
+    </Typography>
+
+    {/* ANIMATION */}
+
+    <style jsx>{`
+
+      @keyframes spin {
+
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+
+      }
+
+    `}</style>
+
+  </Box>
+
+)}
 
       {/* EMPTY */}
       {!loading && flights.length === 0 && (

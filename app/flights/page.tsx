@@ -21,34 +21,101 @@ function FlightsContent() {
 
   const [coupons, setCoupons] = useState<any[]>([]);
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [loading, setLoading] =
+  useState(true);
 
   const from = params.get("from") || "";
   const to = params.get("to") || "";
   const date = params.get("date") || "";
 
   /* ================= FETCH ================= */
-  useEffect(() => {
-    if (!from || !to) return;
+ useEffect(() => {
 
-    fetch(`https://airvoyage-final-project-backend-2.onrender.com/api/flights?from=${from}&to=${to}&date=${date}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) setFlights(data);
-        else if (Array.isArray(data.flights)) setFlights(data.flights);
-        else if (Array.isArray(data.data)) setFlights(data.data);
-        else setFlights([]);
-      })
-      .catch(() => setFlights([]));
+  if (!from || !to) return;
 
-    fetch("https://airvoyage-final-project-backend-2.onrender.com/api/coupons")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) setCoupons(data);
-        else if (Array.isArray(data.data)) setCoupons(data.data);
-        else setCoupons([]);
-      })
-      .catch(() => setCoupons([]));
-  }, [from, to, date]);
+  setLoading(true);
+
+  Promise.all([
+
+    fetch(
+      `https://airvoyage-final-project-backend-2.onrender.com/api/flights?from=${from}&to=${to}&date=${date}`
+    ),
+
+    fetch(
+      "https://airvoyage-final-project-backend-2.onrender.com/api/coupons"
+    ),
+
+  ])
+
+    .then(async ([flightRes, couponRes]) => {
+
+      const flightData =
+        await flightRes.json();
+
+      const couponData =
+        await couponRes.json();
+
+      /* FLIGHTS */
+
+      if (Array.isArray(flightData))
+        setFlights(flightData);
+
+      else if (
+        Array.isArray(
+          flightData.flights
+        )
+      )
+        setFlights(
+          flightData.flights
+        );
+
+      else if (
+        Array.isArray(
+          flightData.data
+        )
+      )
+        setFlights(
+          flightData.data
+        );
+
+      else
+        setFlights([]);
+
+      /* COUPONS */
+
+      if (
+        Array.isArray(couponData)
+      )
+        setCoupons(couponData);
+
+      else if (
+        Array.isArray(
+          couponData.data
+        )
+      )
+        setCoupons(
+          couponData.data
+        );
+
+      else
+        setCoupons([]);
+
+    })
+
+    .catch(() => {
+
+      setFlights([]);
+      setCoupons([]);
+
+    })
+
+    .finally(() => {
+
+      setLoading(false);
+
+    });
+
+}, [from, to, date]);
 
 
   /* ================= OPEN MODAL ================= */
@@ -345,6 +412,106 @@ const finalTotal =
     0
   );
 
+if (loading) {
+
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff5f5,#ffffff)",
+
+      }}
+    >
+
+      {/* SPINNER */}
+
+      <div
+        style={{
+
+          width:"80px",
+
+          height:"80px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #dc2626",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"24px",
+
+        }}
+      />
+
+      {/* TITLE */}
+
+      <h2
+        style={{
+
+          color:"#dc2626",
+
+          fontWeight:700,
+
+          marginBottom:"8px",
+
+        }}
+      >
+        Searching Flights...
+      </h2>
+
+      {/* SUBTEXT */}
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Finding best fares & available seats ✈
+      </p>
+
+      {/* ANIMATION */}
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
+
+}
+
+
+
   return (
     <div className="page-container">
 
@@ -614,7 +781,31 @@ export default function FlightsPage() {
   return (
 
     <Suspense
-      fallback={<p>Loading...</p>}
+    fallback={
+
+  <div
+    style={{
+
+      height:"100vh",
+
+      display:"flex",
+
+      alignItems:"center",
+
+      justifyContent:"center",
+
+      fontSize:"20px",
+
+      fontWeight:"bold",
+
+      color:"#dc2626",
+
+    }}
+  >
+    Loading Flights...
+  </div>
+
+}
     >
 
       <FlightsContent />

@@ -6,12 +6,39 @@ const BASE = "https://airvoyage-final-project-backend-2.onrender.com/api/superad
 
 export default function RBAC() {
   const [users, setUsers] = useState<any[]>([]);
-
+const [loading, setLoading] =
+  useState(true);
   const fetchData = async () => {
-    const res = await fetch(`${BASE}/rbac`);
-    const data = await res.json();
-    setUsers(data.users || []);
-  };
+
+  try {
+
+    setLoading(true);
+
+    const res =
+      await fetch(
+        `${BASE}/rbac`
+      );
+
+    const data =
+      await res.json();
+
+    setUsers(
+      data.users || []
+    );
+
+  } catch (err) {
+
+    console.log(err);
+
+    setUsers([]);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   useEffect(() => {
     fetchData();
@@ -48,6 +75,105 @@ export default function RBAC() {
       (p: any) => p.module === module && p.enabled
     );
   };
+
+
+  if (loading) {
+
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff5f5,#ffffff)",
+
+      }}
+    >
+
+      {/* SPINNER */}
+
+      <div
+        style={{
+
+          width:"80px",
+
+          height:"80px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #8B0000",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"24px",
+
+        }}
+      />
+
+      {/* TITLE */}
+
+      <h2
+        style={{
+
+          color:"#8B0000",
+
+          fontWeight:700,
+
+          marginBottom:"8px",
+
+        }}
+      >
+        Loading RBAC Panel...
+      </h2>
+
+      {/* SUBTEXT */}
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Fetching users & permissions 
+      </p>
+
+      {/* ANIMATION */}
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
+
+}
 
   return (
     <div className="rbac">

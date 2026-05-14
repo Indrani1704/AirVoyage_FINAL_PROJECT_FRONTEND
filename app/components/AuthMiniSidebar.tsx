@@ -474,49 +474,75 @@ window.dispatchEvent(
 
         )}
 
-        {/* SOCIAL */}
+       {/* SOCIAL */}
 
-        <div
-          style={{
+<div
+  style={{
 
-            display:"flex",
+    display:"flex",
 
-            flexDirection:"column",
+    flexDirection:"column",
 
-            gap:10,
+    gap:10,
 
-            marginBottom:20,
+    marginBottom:20,
 
-          }}
-        >
+  }}
+>
 
-          <button
-            style={googleBtn}
-          >
-            Continue with Google
-          </button>
+  <button
 
-          <button
-            style={fbBtn}
-          >
-            Continue with Facebook
-          </button>
+    type="button"
 
-          <div
-            style={{
+    style={googleBtn}
 
-              textAlign:"center",
+    onClick={() => {
 
-              color:"#999",
+      setError("");
+      setMessage(
+        "Google login is currently under maintenance."
+      );
 
-              fontSize:"13px",
+    }}
 
-            }}
-          >
-            ─── OR ───
-          </div>
+  >
+    Continue with Google
+  </button>
 
-        </div>
+  <button
+
+    type="button"
+
+    style={fbBtn}
+
+    onClick={() => {
+
+      setError("");
+      setMessage(
+        "Facebook login is currently under maintenance."
+      );
+
+    }}
+
+  >
+    Continue with Facebook
+  </button>
+
+  <div
+    style={{
+
+      textAlign:"center",
+
+      color:"#999",
+
+      fontSize:"13px",
+
+    }}
+  >
+    ─── OR ───
+  </div>
+
+</div>
 
         {/* LOGIN FORM */}
 

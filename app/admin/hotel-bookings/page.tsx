@@ -143,20 +143,110 @@ export default function HotelBookingsPage() {
 
           <TableBody>
 
-            {loading && (
+         {loading && (
 
-              <TableRow>
+  <TableRow>
 
-                <TableCell
-                  colSpan={7}
-                  align="center"
-                >
-                  Loading...
-                </TableCell>
+    <TableCell
+      colSpan={7}
+      align="center"
+      sx={{
+        py:8,
+      }}
+    >
 
-              </TableRow>
+      <Box
+        sx={{
 
-            )}
+          display:"flex",
+
+          flexDirection:"column",
+
+          alignItems:"center",
+
+          justifyContent:"center",
+
+        }}
+      >
+
+        {/* SPINNER */}
+
+        <Box
+          sx={{
+
+            width:"75px",
+
+            height:"75px",
+
+            border:
+              "6px solid #f3f3f3",
+
+            borderTop:
+              "6px solid #C62828",
+
+            borderRadius:"50%",
+
+            animation:
+              "spin 1s linear infinite",
+
+            mb:3,
+
+          }}
+        />
+
+        {/* TITLE */}
+
+        <Typography
+          sx={{
+
+            fontWeight:"bold",
+
+            color:"#8B0000",
+
+            fontSize:"22px",
+
+            mb:1,
+
+          }}
+        >
+          Loading Hotel Bookings...
+        </Typography>
+
+        {/* SUBTEXT */}
+
+        <Typography
+          sx={{
+            color:"gray",
+          }}
+        >
+          Fetching latest hotel reservations 
+        </Typography>
+
+        {/* ANIMATION */}
+
+        <style jsx>{`
+
+          @keyframes spin {
+
+            0% {
+              transform: rotate(0deg);
+            }
+
+            100% {
+              transform: rotate(360deg);
+            }
+
+          }
+
+        `}</style>
+
+      </Box>
+
+    </TableCell>
+
+  </TableRow>
+
+)}
 
             {!loading &&
               bookings.length === 0 && (

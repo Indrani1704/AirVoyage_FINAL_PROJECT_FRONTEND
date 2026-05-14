@@ -25,6 +25,8 @@ import {
 const BASE =
   "https://airvoyage-final-project-backend-2.onrender.com/api";
 
+  
+
 const getBookings =
   async () => {
 
@@ -73,44 +75,55 @@ export default function Bookings() {
     setBookings,
   ] = useState<any[]>([]);
 
+  const [
+  loading,
+  setLoading,
+] = useState(false);
+
   /* ================= FETCH ================= */
 
   const fetchData =
-    async () => {
+  async () => {
 
-      try {
+    try {
 
-        const data =
-          await getBookings();
+      setLoading(true);
 
-        console.log(
-          "BOOKINGS:",
-          data
+      const data =
+        await getBookings();
+
+      console.log(
+        "BOOKINGS:",
+        data
+      );
+
+      /* SAFE RESPONSE */
+
+      if (
+        Array.isArray(data)
+      ) {
+
+        setBookings(data);
+
+      } else {
+
+        setBookings(
+          data.bookings || []
         );
-
-        /* SAFE RESPONSE */
-
-        if (
-          Array.isArray(data)
-        ) {
-
-          setBookings(data);
-
-        } else {
-
-          setBookings(
-            data.bookings || []
-          );
-
-        }
-
-      } catch (err) {
-
-        console.log(err);
 
       }
 
-    };
+    } catch (err) {
+
+      console.log(err);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
 
   useEffect(() => {
 
@@ -161,9 +174,95 @@ export default function Bookings() {
   }}
 >
   ✈ Booking Management
+
+  {/* LOADING */}
+
+{loading && (
+
+  <Box
+    sx={{
+
+      minHeight:"60vh",
+
+      display:"flex",
+
+      flexDirection:"column",
+
+      alignItems:"center",
+
+      justifyContent:"center",
+
+    }}
+  >
+
+    <Box
+      sx={{
+
+        width:"75px",
+
+        height:"75px",
+
+        border:
+          "6px solid #f3f3f3",
+
+        borderTop:
+          "6px solid #C62828",
+
+        borderRadius:"50%",
+
+        animation:
+          "spin 1s linear infinite",
+
+        mb:3,
+
+      }}
+    />
+
+    <Typography
+      variant="h5"
+      sx={{
+
+        fontWeight:"bold",
+
+        color:"#8B0000",
+
+        mb:1,
+
+      }}
+    >
+      Loading Bookings...
+    </Typography>
+
+    <Typography
+      sx={{
+        color:"gray",
+      }}
+    >
+      Fetching latest booking data ✈
+    </Typography>
+
+    <style jsx>{`
+
+      @keyframes spin {
+
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+
+      }
+
+    `}</style>
+
+  </Box>
+
+)}
 </Typography>
       {/* TABLE */}
-
+{!loading && (
       <Paper
         sx={{
           borderRadius:4,
@@ -437,7 +536,7 @@ export default function Bookings() {
         </Table>
 
       </Paper>
-
+)}
     </Box>
 
   );

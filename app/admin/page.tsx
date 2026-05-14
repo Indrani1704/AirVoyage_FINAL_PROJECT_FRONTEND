@@ -35,32 +35,49 @@ export default function Dashboard() {
   const [flights, setFlights] = useState<any[]>([]);
   const [weather, setWeather] = useState<any>(null);
   const [city, setCity] = useState("Kolkata");
+  const [loading, setLoading] =
+  useState(true);
 
 const router =
   useRouter();
 
   const safeFetch = async (
   url: string,
-  setter: React.Dispatch<React.SetStateAction<any>>
+  setter: React.Dispatch<
+    React.SetStateAction<any>
+  >
 ) => {
+
   try {
-    const res = await fetch(url);
+
+    setLoading(true);
+
+    const res =
+      await fetch(url);
 
     if (!res.ok)
-      throw new Error("API Error");
+      throw new Error(
+        "API Error"
+      );
 
-    const json = await res.json();
+    const json =
+      await res.json();
 
     setter(json);
 
-  } catch (err: any) {
+  } catch (err:any) {
 
     console.log(
       "Fetch error:",
       err.message
     );
 
+  } finally {
+
+    setLoading(false);
+
   }
+
 };
 
   useEffect(() => {
@@ -75,7 +92,93 @@ const router =
     );
   }, [city]);
 
-  if (!data) return <p>Loading...</p>;
+ {/* LOADING */}
+if (loading || !data)
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff5f5,#ffffff)",
+
+      }}
+    >
+
+      <div
+        style={{
+
+          width:"70px",
+
+          height:"70px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #c62828",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"20px",
+
+        }}
+      />
+
+      <h2
+        style={{
+
+          color:"#c62828",
+
+          fontWeight:700,
+
+          marginBottom:"8px",
+
+        }}
+      >
+        Loading Dashboard...
+      </h2>
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Fetching analytics & flights
+      </p>
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
 
   const current = Array.isArray(weather?.list)
   ? weather.list[0]
