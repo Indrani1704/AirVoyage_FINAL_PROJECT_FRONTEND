@@ -592,7 +592,103 @@ toast.error(
   }
 
 };
+if (loading) {
 
+  return (
+
+    <div
+      style={{
+
+        height:"100vh",
+
+        display:"flex",
+
+        flexDirection:"column",
+
+        alignItems:"center",
+
+        justifyContent:"center",
+
+        background:
+          "linear-gradient(135deg,#fff8f0,#ffffff)",
+
+      }}
+    >
+
+      {/* SPINNER */}
+
+      <div
+        style={{
+
+          width:"80px",
+
+          height:"80px",
+
+          border:
+            "6px solid #f3f3f3",
+
+          borderTop:
+            "6px solid #8B0000",
+
+          borderRadius:"50%",
+
+          animation:
+            "spin 1s linear infinite",
+
+          marginBottom:"24px",
+
+        }}
+      />
+
+      {/* TITLE */}
+
+      <h2
+        style={{
+
+          color:"#8B0000",
+
+          fontWeight:700,
+
+          marginBottom:"8px",
+
+        }}
+      >
+        Searching Hotels...
+      </h2>
+
+      {/* SUBTEXT */}
+
+      <p
+        style={{
+          color:"#777",
+        }}
+      >
+        Finding luxury stays & best prices 🏨
+      </p>
+
+      {/* ANIMATION */}
+
+      <style jsx>{`
+
+        @keyframes spin {
+
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+
+        }
+
+      `}</style>
+
+    </div>
+
+  );
+
+}
   return(
 
     <div className="page-container">
@@ -632,92 +728,7 @@ toast.error(
       </div>
 
       {/* HOTELS */}
-{/* LOADING */}
 
-{loading && (
-
-  <div
-    style={{
-
-      minHeight:"45vh",
-
-      display:"flex",
-
-      alignItems:"center",
-
-      justifyContent:"center",
-
-      flexDirection:"column",
-
-      gap:"18px",
-
-    }}
-  >
-
-    <div
-      style={{
-
-        width:"55px",
-
-        height:"55px",
-
-        border:"5px solid #f3f3f3",
-
-        borderTop:
-          "5px solid #8B0000",
-
-        borderRadius:"50%",
-
-        animation:
-          "spin 1s linear infinite",
-
-      }}
-    />
-
-    <h2
-      style={{
-
-        color:"#8B0000",
-
-        fontSize:"18px",
-
-        fontWeight:700,
-
-      }}
-    >
-
-      Loading Hotels...
-
-    </h2>
-
-  </div>
-
-)}
-
-{/* EMPTY */}
-
-{!loading &&
- hotels.length === 0 && (
-
-  <p
-    style={{
-
-      textAlign:"center",
-
-      marginTop:"40px",
-
-      color:"#777",
-
-      fontSize:"16px",
-
-    }}
-  >
-
-    No hotels found
-
-  </p>
-
-)}
       <div className="card-list">
 
         {hotels.map((h)=>(
